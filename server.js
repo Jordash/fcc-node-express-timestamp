@@ -7,7 +7,7 @@ var app = express();
 var bodyParser = require('body-parser');
 
 // enable CORS (https://en.wikipedia.org/wiki/Cross-origin_resource_sharing)
-// so that your API is remotely testable by FCC 
+// so that your API is remotely testable by FCC
 var cors = require('cors');
 app.use(cors({optionsSuccessStatus: 200}));  // some legacy browsers choke on 204
 
@@ -21,7 +21,7 @@ app.get("/", function (req, res) {
 
 
 
-// your first API endpoint... 
+// your first API endpoint...
 app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
@@ -35,12 +35,12 @@ app.get("/api/timestamp", function (req, res) {
 });
 
 // API endpoint /api/timestamp/:date?
-//Test UNIX  https://boilerplate-project-timestamp-1.jordash.repl.co/api/timestamp/:date?d=1451001600000
-//Test UTC  https://boilerplate-project-timestamp-1.jordash.repl.co/api/timestamp/:date?d=2015-12-25
+//Test UNIX  https://boilerplate-project-timestamp-1.jordash.repl.co/api/timestamp/1451001600000
+//Test UTC  https://boilerplate-project-timestamp-1.jordash.repl.co/api/timestamp/2015-12-25
 // Displays specified date
 app.get('/api/timestamp/:date', function(req, res){
-  let rawdate = req.query.d;
-  //RegEx to detect string with numbers only 
+  let rawdate = req.params.date;
+  //RegEx to detect string with numbers only
   let regex = /^[0-9]*$/gm;
   //check if date input is string or number
   let regextest = regex.test(rawdate);
@@ -51,15 +51,15 @@ app.get('/api/timestamp/:date', function(req, res){
     //Generate correct UTC string
     numdate = new Date(numdate);
     let converted = numdate.toUTCString();
-    res.json( {'Unix': parseFloat(rawdate),'UTC': `${converted}` } );
+    res.json( {'unix': parseFloat(rawdate),'utc': `${converted}` } );
   }
   else {
-    rawdate = new Date(req.query.d);
+    rawdate = new Date(req.params.date);
     //Generate correct Unix string
     let converted = rawdate.valueOf();
     //Check if the date was valid and able to be converted
     if ( converted ){
-      res.json( {'Unix': converted, 'UTC': rawdate.toUTCString() } );
+      res.json( {'unix': converted, 'utc': rawdate.toUTCString() } );
     }
     else {
       //date is invalid, output error
